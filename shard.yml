@@ -1,0 +1,17 @@
+name: send-email
+version: 0.1.0
+
+authors:
+  - Martin Mareš <mares@datalite.cz>
+
+targets:
+  send-email:
+    main: src/send-email.cr
+
+dependencies:
+  email:
+    github: arcage/crystal-email
+
+crystal: 1.3.2
+
+license: MIT
