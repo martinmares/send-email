@@ -52,7 +52,7 @@ end
     property address : String
 
     @[YAML::Field(key: "name", emit_null: true)]
-    property from : String?
+    property name : String?
   end
 
 end

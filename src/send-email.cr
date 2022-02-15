@@ -18,15 +18,19 @@ module SendEmail
       @arg_pars.parse
       @arg_pars.check
       @config = Config.load from: @arg_pars.args[:config]
-      p @config
     end
 
     def run()
         # Create email message
         email = EMail::Message.new
-        email.from    "noreply@datalite.cz", "Notify"
-        email.to      "mares@datalite.cz", "Martin Mareš"
-        email.subject "Test email - hello world!"
+        email.from @config.mail.from.address, @config.mail.from.name ? @config.mail.from.name : ""
+        if @config.mail.to
+          addrs =  @config.mail.to.as(Array(SendEmail::Email))
+          addrs.each do |to|
+            email.to to.address #, to.name? ? to.name : ""
+          end
+        end
+        email.subject @config.mail.subject
         email.message <<-EOM
           Testovací email.
 
@@ -36,16 +40,13 @@ module SendEmail
 
         # Email HTML email body
         email.message_html <<-EOM
-
+          <h1>Hello world!</h1>
         EOM
 
-        config = EMail::Client::Config.new("oracleas.datalite.cz", 2525)
-
-        # Create SMTP client object
-        client = EMail::Client.new(config)
+        smtp_conf = EMail::Client::Config.new(@config.smtp.hostname, @config.smtp.port)
+        client = EMail::Client.new(smtp_conf)
 
         client.start do
-          # In this block, default receiver is client
           send(email)
         end
     end
@@ -53,6 +54,6 @@ module SendEmail
   end
 
   app = App.new
-  # app.run
+  app.run
 
 end
