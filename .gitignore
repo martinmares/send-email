@@ -5,7 +5,9 @@
 *.dwarf
 /.tmp/
 /conf/
+/conf/*
 /templates/
+/templates/*
 
 .vscode/*
 !.vscode/settings.json
