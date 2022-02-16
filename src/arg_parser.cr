@@ -4,19 +4,25 @@ require "log"
 
 module SendEmail
   class ArgParser
-    getter :args
+    getter :args, :args_multi
+
     @args : Hash(Symbol, String)
+    @args_multi : Hash(Symbol, Array(String))
 
     def initialize
       @args = Hash(Symbol, String).new
+      @args_multi = Hash(Symbol, Array(String)).new
     end
 
     def parse
-      args = Hash(Symbol, String).new
       OptionParser.parse do |parser|
         parser.banner = "Usage: send-email [arguments]"
         parser.on("-c CONFIG", "--config=CONFIG", "Specifies the name of the configuration file") do |_config|
-          args[:config] = _config
+          @args[:config] = _config
+        end
+        parser.on("-a ATTACHMENT", "--attachment=ATTACHMENT", "Attachment file to email (can be set multiple times)") do |_attachment|
+          @args_multi[:attachment] = [] of String unless @args_multi.has_key? :attachment
+          @args_multi[:attachment] << _attachment
         end
         parser.on("-h", "--help", "Show this help") do
           puts parser
@@ -29,7 +35,6 @@ module SendEmail
         end
       end
 
-      @args = args
     end
 
     def check

@@ -3,6 +3,9 @@
 /bin/
 /.shards/
 *.dwarf
+/.tmp/
+/conf/
+/templates/
 
 .vscode/*
 !.vscode/settings.json
