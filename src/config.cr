@@ -24,6 +24,9 @@ module SendEmail
 
     @[YAML::Field(key: "port")]
     property port : Int32
+
+    @[YAML::Field(key: "helo_domain")]
+    property helo_domain : String
   end
 
   class Mail

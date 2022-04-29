@@ -75,7 +75,7 @@ module SendEmail
           end
         end
 
-        smtp_conf = EMail::Client::Config.new(@config.smtp.hostname, @config.smtp.port)
+        smtp_conf = EMail::Client::Config.new(@config.smtp.hostname, @config.smtp.port, helo_domain: @config.smtp.helo_domain)
         client = EMail::Client.new(smtp_conf)
 
         client.start do
