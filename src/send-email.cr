@@ -76,6 +76,15 @@ module SendEmail
         end
 
         smtp_conf = EMail::Client::Config.new(@config.smtp.hostname, @config.smtp.port, helo_domain: @config.smtp.helo_domain)
+        if @config.smtp.auth_user && @config.smtp.auth_pass
+          smtp_conf.use_auth(id: @config.smtp.auth_user.as(String), password: @config.smtp.auth_pass.as(String))
+          # TLS
+          smtp_conf.use_tls(EMail::Client::TLSMode::SMTPS)
+          smtp_conf.use_tls(EMail::Client::TLSMode::STARTTLS)
+          smtp_conf.tls_context
+          smtp_conf.tls_context.add_options(OpenSSL::SSL::Options::NO_SSL_V2 | OpenSSL::SSL::Options::NO_SSL_V3 | OpenSSL::SSL::Options::NO_TLS_V1 | OpenSSL::SSL::Options::NO_TLS_V1_1)
+          smtp_conf.tls_context.verify_mode = OpenSSL::SSL::VerifyMode::NONE
+        end
         client = EMail::Client.new(smtp_conf)
 
         client.start do

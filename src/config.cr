@@ -27,7 +27,13 @@ module SendEmail
 
     @[YAML::Field(key: "helo_domain")]
     property helo_domain : String
-  end
+
+    @[YAML::Field(key: "auth_user", emit_null: true)]
+    property auth_user : String?
+
+    @[YAML::Field(key: "auth_pass", emit_null: true)]
+    property auth_pass : String?
+end
 
   class Mail
     include YAML::Serializable
