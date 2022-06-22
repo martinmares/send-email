@@ -72,7 +72,7 @@ $ ./bin/send-email --config conf/hello-world.yml
 ./bin/send-email --config conf/hello-world.yml -a README.md
 ```
 
-1. or add more attachments!
+7. or add more attachments!
 
 ```bash
 ./bin/send-email --config conf/hello-world.yml -a README.md -a LICENSE
